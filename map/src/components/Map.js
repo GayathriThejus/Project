@@ -31,6 +31,12 @@ function Map() {
        GEC Thrissur,Kerala
       </Popup>
     </Marker>
+
+    <Marker position={[11.786, 77.2144]} icon={defaultIcon}>
+      <Popup>
+       Adhil
+      </Popup>
+    </Marker>
   </MapContainer>
   <h1>
     distance : 

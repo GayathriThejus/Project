@@ -43,7 +43,8 @@ function Map() {
 
     <Marker position={[16.786, 90.2144]} icon={defaultIcon}>
       <Popup>
-       AppuKutty
+       Ivide aan change kettoo
+       
       </Popup>
     </Marker>
   </MapContainer>

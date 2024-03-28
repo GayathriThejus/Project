@@ -34,6 +34,12 @@ function Map() {
        Adhil
       </Popup>
     </Marker>
+
+    <Marker position={[12.786, 78.2144]} icon={defaultIcon}>
+      <Popup>
+       Gayathri
+      </Popup>
+    </Marker>
   </MapContainer>
   <h1>
     distance : 

@@ -6,9 +6,7 @@ import Map from "./components/Map";
 function App() {
   return (
     <div >
-     {/* <Map/>
-     <Trial/> */}
-     {/* <ComponentA/> */}
+     <Map/>
      <LocationTracker/>
     </div>
   );

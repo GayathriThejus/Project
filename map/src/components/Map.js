@@ -37,16 +37,10 @@ function Map() {
 
     <Marker position={[12.786, 78.2144]} icon={defaultIcon}>
       <Popup>
-<<<<<<< HEAD
        Gayathri
       </Popup>
     </Marker>
-=======
-       Appu
-      </Popup>
-    </Marker>
 
->>>>>>> 91359795cfb7441c958a77a121c52c1d41fe8147
   </MapContainer>
   <h1>
     distance : 

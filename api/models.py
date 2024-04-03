@@ -13,24 +13,32 @@ class User(Model):
     userid=fields.IntField(pk=True)
     password=fields.TextField()
 
-class Bus(Model):
-    bus_id=fields.IntField(pk=True)
-    user=fields.ForeignKeyField('models.User',related_name="buses")
+# class Bus(Model):
+#     bus_id=fields.IntField(pk=True)
+#     user=fields.ForeignKeyField('models.User',related_name="buses")
 
-class BusDetails(Model):
-    bus=fields.ForeignKeyField('models.Bus',related_name="bus_details")
-    starting_pt=fields.JSONField()
-    ending_pt=fields.JSONField()
+# class BusDetails(Model):
+#     bus=fields.IntField(pk=True)
+#     starting_pt=fields.JSONField()
+#     ending_pt=fields.JSONField()
+#     stops=fields.JSONField()
+#     userid=fields.ForeignKeyField('models.User',related_name="buses")
+    
+class BusDetailsEve(Model):
+    bus=fields.IntField(pk=True)
+    school_pt=fields.JSONField()
+    end_pt=fields.JSONField()
     stops=fields.JSONField()
     
-
 
 
 Gpsdata_pydantic=pydantic_model_creator(Gpsdata,name="Gpsdata")
 Gpsdata_pydanticIn=pydantic_model_creator(Gpsdata,name="Gpsdata",exclude_readonly=True)
 user_model=pydantic_model_creator(User,name="UserLogin")
 user_modelIn=pydantic_model_creator(User,name="UserLoginIn",exclude_readonly=True)
-busreg_model=pydantic_model_creator(Bus,name="Bus")
-busreg_modelIn=pydantic_model_creator(Bus,name="BusIn",exclude_readonly=True)
-bus_model=pydantic_model_creator(BusDetails,name="BusDetails")
-bus_modelIn=pydantic_model_creator(BusDetails,name="BusDetailsIn",exclude_readonly=True)
+# busreg_model=pydantic_model_creator(Bus,name="Bus")
+# busreg_modelIn=pydantic_model_creator(Bus,name="BusIn",exclude_readonly=True)
+# bus_model=pydantic_model_creator(BusDetails,name="BusDetails")
+# bus_modelIn=pydantic_model_creator(BusDetails,name="BusDetailsIn",exclude_readonly=True)
+bus_model=pydantic_model_creator(BusDetailsEve,name='BusDetailsEve')
+bus_modelIn=pydantic_model_creator(BusDetailsEve,name='BusDetailsEve',exclude_readonly=True)

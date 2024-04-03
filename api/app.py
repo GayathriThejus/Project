@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
-from models import Gpsdata,Gpsdata_pydantic,Gpsdata_pydanticIn,user_model,bus_model,User,BusDetails,Bus,busreg_model,bus_modelIn
+from models import Gpsdata,Gpsdata_pydantic,Gpsdata_pydanticIn,user_model,bus_model,User,BusDetailsEve,bus_modelIn
 
 
 app=FastAPI()
@@ -21,6 +21,18 @@ async def get_gpsdata():
     response=await Gpsdata_pydantic.from_queryset(Gpsdata.all())
     return {"status":"ok","data":response}
 
+@app.get('/getbusdetailseve')
+async def getbusdet():
+    response=await bus_model.from_queryset(BusDetailsEve.all())
+    return {"status":"ok","data":response}
+
+@app.post('/busdet_eve')
+async def busdetails(businfo:bus_model):
+    bus_obj=await BusDetailsEve.create(**businfo.dict(exclude_unset=True))
+    response=await bus_model.from_tortoise_orm(bus_obj)
+    return {"status":"ok","data":response}
+
+
 @app.get('/userdata')
 async def get_userdata():
     response=await user_model.from_queryset(User.all())
@@ -35,15 +47,15 @@ async def add_userdata(userinfo:user_model):
 
 @app.get('/busregdata')
 async def get_busregdata():
-    response=await busreg_model.from_queryset(Bus.all())
+    response=await bus_model.from_queryset(BusDetails.all().values('bus', 'userid'))
     return {"status":"ok","data":response}
 
 
 @app.post('/busregdata/{user_id}')
-async def add_busregdata(user_id:int,busreginfo:busreg_model):
+async def add_busregdata(user_id:int,busreginfo:bus_model):
     user_det=await User.get(userid=user_id)
     bus_obj=await Bus.create(**busreginfo.dict(),user=user_det)
-    response=await busreg_model.from_tortoise_orm(bus_obj)
+    response=await bus_model.from_tortoise_orm(bus_obj)
     return {"status":"ok","data":response}
 
 

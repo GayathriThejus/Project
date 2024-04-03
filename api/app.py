@@ -1,9 +1,24 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from models import Gpsdata,Gpsdata_pydantic,Gpsdata_pydanticIn,user_model,bus_model,User,BusDetailsEve,bus_modelIn
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI()
+
+
+
+origins = [
+    'http://localhost:3000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = origins,
+    allow_credentials = True,
+    allow_methods=["*"],
+    allow_headers = ['*']
+)
+
 
 @app.get('/')
 def index():
@@ -32,6 +47,16 @@ async def busdetails(businfo:bus_model):
     response=await bus_model.from_tortoise_orm(bus_obj)
     return {"status":"ok","data":response}
 
+@app.put('/busdet_eve/{bus_id}')
+async def update_busdata(bus_id : int, update_info: bus_modelIn):
+    bus = await BusDetailsEve.get(bus= bus_id)
+    update_info = update_info.dict(exclude_unset = True)
+    bus.school_pt=update_info['school_pt']
+    bus.end_pt=update_info['end_pt']
+    bus.stops=update_info['stops']
+    await bus.save()
+    response= await bus_model.from_tortoise_orm(bus)
+    return {'status':'ok','data':response}
 
 @app.get('/userdata')
 async def get_userdata():

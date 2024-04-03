@@ -1,9 +1,18 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from models import Gpsdata,Gpsdata_pydantic,Gpsdata_pydanticIn,user_model,bus_model,User,BusDetailsEve,bus_modelIn
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI()
+
+origins=['*']
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/')
 def index():

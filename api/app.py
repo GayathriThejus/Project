@@ -30,9 +30,9 @@ async def get_gpsdata():
     response=await Gpsdata_pydantic.from_queryset(Gpsdata.all())
     return {"status":"ok","data":response}
 
-@app.get('/getbusdetailseve')
-async def getbusdet():
-    response=await bus_model.from_queryset(BusDetailsEve.all())
+@app.get('/getbusdetailseve/{bus_id}')
+async def getbusdet(bus_id:int):
+    response=await bus_model.from_queryset_single(BusDetailsEve.get(bus =bus_id))
     return {"status":"ok","data":response}
 
 @app.post('/busdet_eve')
@@ -64,7 +64,7 @@ async def add_userdata(userinfo:user_model):
     response=await user_model.from_tortoise_orm(user_obj)
     return {"status":"ok","data":response}
 
-@app.get('/busregdata')
+@app.get('/busregdata/{bus_id}')
 async def get_busregdata():
     response=await bus_model.from_queryset(BusDetails.all().values('bus', 'userid'))
     return {"status":"ok","data":response}

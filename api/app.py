@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from models import Gpsdata,Gpsdata_pydantic,Gpsdata_pydanticIn,user_model,bus_model,User,BusDetailsEve,bus_modelIn
 from fastapi.middleware.cors import CORSMiddleware
+from geopy.distance import distance
 
 app=FastAPI()
 
@@ -33,7 +34,38 @@ async def get_gpsdata():
 @app.get('/getbusdetailseve/{bus_id}')
 async def getbusdet(bus_id:int):
     response=await bus_model.from_queryset_single(BusDetailsEve.get(bus =bus_id))
-    return {"status":"ok","data":response}
+    distances=[]
+    i=0
+    for stop in response.stops:
+        if i == 0:
+            lat = response.school_pt['latitude']
+            long = response.school_pt['longitude']
+            stop=response.stops[0]
+            lat2=stop['pt']['latitude']
+            long2=stop['pt']['longitude']
+            i+=1
+        else:
+            stop=response.stops[i-1]
+            lat = stop['pt']['latitude']
+            long=stop['pt']['longitude']
+            stop2=response.stops[i]
+            lat2 = stop2['pt']['latitude']
+            long2=stop2['pt']['longitude']
+            i+=1
+
+        location=float(lat),float(long)
+        location2=float(lat2),float(long2)
+        dist=distance(location,location2).kilometers
+        distances.append(dist)
+    avg_speed=40
+    time=[]
+    for dist in distances:
+        t=dist/avg_speed
+        t_min=t*60
+        time.append(t_min)
+
+    return {"status":"ok","data":{"distances":distances,"time":time,"other_data":response}}
+    
 
 @app.post('/busdet_eve')
 async def busdetails(businfo:bus_model):
